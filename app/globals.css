@@ -242,10 +242,10 @@
     min-width: 44px;
   }
   
-  /* Better spacing on mobile - reduced padding for better centering */
+  /* Better spacing on mobile - comfortable padding */
   .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   
   /* Prevent text selection on buttons during tap */

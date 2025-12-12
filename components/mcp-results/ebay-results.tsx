@@ -279,7 +279,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full">
+            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full px-2 sm:px-0">
               {filteredItems.map((item, index) => (
                 <EbayItemCard key={item.item_id} item={item} index={index} onNegotiate={onNegotiate} />
               ))}
@@ -636,7 +636,7 @@ Please provide:
   
   return (
     <div 
-      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full ${getRingColor()}`}
+      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full max-w-full sm:max-w-none ${getRingColor()}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Image Carousel Gallery */}
