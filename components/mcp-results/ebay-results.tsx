@@ -127,8 +127,8 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
   const count = filteredItems.length;
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="w-full mx-auto">
+      <CardHeader className="px-3 sm:px-6">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">

@@ -492,7 +492,7 @@ export default function Home() {
       {/* Chat Area */}
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
-          <div className="container max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
+          <div className="container max-w-4xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
             {messages.length === 0 ? (
               <div className="flex h-full items-center justify-center min-h-[60vh] animate-slide-up">
                 <Card className="w-full max-w-3xl p-8 md:p-12 glass hover-lift">
