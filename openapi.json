@@ -1,0 +1,2148 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WatchCharts API (v3)",
+    "version": "",
+    "description": "The official WatchCharts API, providing programmatic access to WatchCharts data to support your business. To sign up for a 7-day free trial, visit https://watchcharts.com/subscribe",
+    "contact": {
+      "email": "contact@watchcharts.com",
+      "url": "https:/watchcharts.com/api"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.watchcharts.com/v3"
+    }
+  ],
+  "x-amazon-apigateway-api-key-source": "HEADER",
+  "tags": [
+    {
+      "name": "Level 1 Endpoints",
+      "description": "These endpoints are available to WatchCharts API subscribers with Level 1 access. To sign up for a 7-day free trial, visit https://watchcharts.com/subscribe"
+    },
+    {
+      "name": "Level 2 Endpoints",
+      "description": "These endpoints are available to WatchCharts API subscribers with Level 2 access. To sign up for a 7-day free trial, visit https://watchcharts.com/subscribe"
+    }
+  ],
+  "paths": {
+    "/search/watch": {
+      "get": {
+        "summary": "Search for a watch",
+        "description": "Search for a watch in our catalog based on the brand and reference number. A list of results with the watch uuid will be returned, which will be used to query the \"/watch/\" endpoints.",
+        "parameters": [
+          {
+            "name": "brand_name",
+            "in": "query",
+            "description": "The name of the brand to search within. For a list of supported brand names, refer to the \"/brand/list\" endpoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "description": "The reference number to search for.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exact_match",
+            "in": "query",
+            "description": "By default, this endpoint returns partial matches. If `exact_match` is set to `true`, only watches and variants that exactly match the reference number provided will be returned. Defaults to false.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchWatch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SearchWatchFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "1 credit",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 1 Endpoints"
+        ]
+      }
+    },
+    "/watch/info": {
+      "get": {
+        "summary": "Get watch info",
+        "description": "Retrieve basic information about a watch, including the brand, collection, reference number, and market price.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the watch to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          },
+          {
+            "$ref": "#/components/parameters/Date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchInfoFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "3 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 1 Endpoints"
+        ]
+      }
+    },
+    "/watch/price_1y": {
+      "get": {
+        "summary": "Get watch 1 year price history",
+        "description": "Retrieve the daily price history for a watch over the past year.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the watch to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchPrice1yFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "3 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 1 Endpoints"
+        ]
+      }
+    },
+    "/watch/price_5y": {
+      "get": {
+        "summary": "Get watch 5 year price history",
+        "description": "Retrieves the daily price history for a watch over the last 5 years.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "uuid of the watch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchPrice5yFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "8 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/watch/price_full": {
+      "get": {
+        "summary": "Get watch full price history",
+        "description": "Retrieves the complete daily price history for a watch.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "uuid of the watch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchPriceFullFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "10 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/watch/retail": {
+      "get": {
+        "summary": "Get watch retail price",
+        "description": "Retrieves the retail price information for a watch based on the given currency.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "uuid of the watch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceRetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchRetailFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "5 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/watch/specs": {
+      "get": {
+        "summary": "Get watch specs",
+        "description": "Retrieve model specifications for a watch.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the watch to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchSpecs"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchSpecsFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "10 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/watch/listings": {
+      "get": {
+        "summary": "Get watch listings",
+        "description": "Retrieve the 10 most recent listings for this watch from private sales sources.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the watch to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchListings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchListingsFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "5 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/watch/appraisal": {
+      "get": {
+        "summary": "Get watch appraisal",
+        "description": "Make an appraisal for a watch based on condition, delivery contents, and region.",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "The uuid of the watch to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "condition",
+            "in": "query",
+            "description": "The condition of the watch.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "new",
+                "used"
+              ]
+            }
+          },
+          {
+            "name": "delivery_contents",
+            "in": "query",
+            "description": "The delivery contents of the watch.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "watch_only",
+                "watch_with_box_and_papers"
+              ]
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "description": "The region the watch is located in. Use `g` for Global, `na` for North America, `eu` for Europe, and `as` for Asia.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "g",
+                "na",
+                "eu",
+                "as"
+              ]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/Date"
+          },
+          {
+            "$ref": "#/components/parameters/Currency"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchAppraisal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WatchAppraisalFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "5 credits",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 2 Endpoints"
+        ]
+      }
+    },
+    "/brand/list": {
+      "get": {
+        "summary": "List brands",
+        "description": "Retrieve the list of brands supported by the WatchCharts API.",
+        "parameters": [
+          {
+            "name": "min_watch_count",
+            "in": "query",
+            "description": "Only returns brands with at least this number of supported watches with market data. Defaults to 1.",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing or incorrect parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BrandListFunction.Arn}/invocations"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200"
+            }
+          },
+          "httpMethod": "GET",
+          "type": "aws_proxy"
+        },
+        "x-badges": [
+          {
+            "name": "1 credit",
+            "position": "after",
+            "color": "purple"
+          }
+        ],
+        "tags": [
+          "Level 1 Endpoints"
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "X-Api-Key",
+        "in": "header"
+      }
+    },
+    "parameters": {
+      "Currency": {
+        "name": "currency",
+        "in": "query",
+        "description": "The currency to use when retrieving prices.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "default": "USD",
+          "enum": [
+            "USD",
+            "EUR",
+            "GBP",
+            "AUD",
+            "CHF",
+            "CAD",
+            "HKD",
+            "JPY",
+            "SGD",
+            "CNY",
+            "INR",
+            "MXN"
+          ]
+        }
+      },
+      "Date": {
+        "name": "date",
+        "in": "query",
+        "description": "The date of the price to retrieve in YYYY-MM-DD format. If no date is provided, the latest date with market data will be used.",
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "schemas": {
+      "PriceRetail": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "example": 10800
+          },
+          "value_updated": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-06"
+          },
+          "in_production": {
+            "type": "boolean",
+            "example": true
+          },
+          "in_production_updated": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "2024-06"
+          }
+        }
+      },
+      "PriceHistory": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/WatchAppraisal"
+        },
+        "example": {
+          "2023-12-05": {
+            "price": 26206,
+            "volatility": 0.051
+          },
+          "2023-12-06": {
+            "price": 26202,
+            "volatility": 0.051
+          },
+          "2023-12-07": {
+            "price": 26253,
+            "volatility": 0.051
+          }
+        }
+      },
+      "WatchAppraisal": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether or not the the specified watch is supported for appraisal"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-12-07",
+            "nullable": true,
+            "description": "The date of the price and volatility retrieved, or `null` if the specified watch is not supported for appraisal"
+          },
+          "price": {
+            "type": "number",
+            "format": "integer",
+            "example": 26253,
+            "nullable": true,
+            "description": "The market price at the specified date, or `null` if no market data was available at that date"
+          },
+          "volatility": {
+            "type": "number",
+            "format": "float",
+            "example": 0.051,
+            "nullable": true,
+            "description": "The volatility at the specified date, or `null` if no market data was available at that date"
+          }
+        }
+      },
+      "WatchInfo": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "example": "Rolex"
+          },
+          "collection": {
+            "type": "string",
+            "example": "Daytona"
+          },
+          "model": {
+            "type": "string",
+            "example": "116500"
+          },
+          "market_price": {
+            "type": "number",
+            "format": "float",
+            "example": 27789
+          },
+          "dealer_price": {
+            "type": "number",
+            "format": "float",
+            "example": 29781
+          },
+          "volatility": {
+            "type": "number",
+            "format": "float",
+            "example": 0.079
+          },
+          "updated": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-12-07"
+          }
+        }
+      },
+      "WatchListings": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/WatchListing"
+        }
+      },
+      "WatchListing": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Rolex black panda Godzilla Daytona 116500ln"
+          },
+          "price_in_usd": {
+            "type": "number",
+            "format": "float",
+            "example": 23767
+          },
+          "price_in_requested_currency": {
+            "type": "number",
+            "format": "float",
+            "example": 22204
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://www.carousell.sg/p/1266045717"
+          },
+          "created": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-11-16"
+          }
+        }
+      },
+      "WatchSpecs": {
+        "properties": {
+          "Dial Color": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Black",
+                "Silver",
+                "White",
+                "Blue",
+                "Grey",
+                "Mother of pearl",
+                "Champagne",
+                "Green",
+                "Brown",
+                "Gold",
+                "Transparent",
+                "Pink",
+                "Skeletonized",
+                "Red",
+                "Yellow",
+                "Purple",
+                "Orange",
+                "Bordeaux",
+                "Bronze",
+                "Silver (solid)",
+                "Gold (solid)",
+                "Meteorite",
+                "Turquoise"
+              ]
+            },
+            "example": [
+              "Black"
+            ]
+          },
+          "Bezel Material": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Steel",
+                "Rose gold",
+                "Ceramic",
+                "Yellow gold",
+                "Titanium",
+                "White gold",
+                "Platinum",
+                "Red gold",
+                "Gold/steel",
+                "Aluminum",
+                "Plastic",
+                "Silver",
+                "Carbon",
+                "Bronze",
+                "Gem-set",
+                "Palladium",
+                "Tantalum",
+                "Tungsten",
+                "Rubber"
+              ]
+            },
+            "example": [
+              "Steel"
+            ]
+          },
+          "Case Diameter": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "39mm"
+            ]
+          },
+          "Crystal": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Sapphire crystal",
+                "Mineral glass",
+                "Plexiglass",
+                "Plastic",
+                "Glass"
+              ]
+            },
+            "example": [
+              "Sapphire crystal"
+            ]
+          },
+          "Dial Numerals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "No numerals",
+                "Arabic numerals",
+                "Roman numerals",
+                "Lines",
+                "Gemstones"
+              ]
+            },
+            "example": [
+              "No numerals"
+            ]
+          },
+          "Case Thickness": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "9mm"
+            ]
+          },
+          "Water Resistance": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "30M"
+            ]
+          },
+          "Lug Width": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "18mm"
+            ]
+          },
+          "Case Material": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Steel",
+                "Rose gold",
+                "Titanium",
+                "Gold/steel",
+                "White gold",
+                "Yellow gold",
+                "Ceramic",
+                "Platinum",
+                "Plastic",
+                "Red gold",
+                "Carbon",
+                "Bronze",
+                "Aluminum",
+                "Silver",
+                "Palladium",
+                "Tantalum",
+                "Sapphire crystal",
+                "Gold-plated"
+              ]
+            },
+            "example": [
+              "Steel"
+            ]
+          },
+          "Style": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Dive",
+                "Field",
+                "Pilot",
+                "Dress",
+                "Digital",
+                "Racing"
+              ]
+            },
+            "example": [
+              "Dive"
+            ]
+          },
+          "Complications": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Date",
+                "Chronograph",
+                "Weekday",
+                "Gmt",
+                "Moon phase",
+                "Tachymeter",
+                "Month",
+                "Perpetual calendar",
+                "Alarm",
+                "Flyback",
+                "Tourbillon",
+                "Year",
+                "Panorama date",
+                "Annual calendar",
+                "4-year calendar",
+                "Minute repeater",
+                "Double chronograph",
+                "Jumping hour",
+                "Equation of time",
+                "Chiming clock"
+              ]
+            },
+            "example": [
+              "Date"
+            ]
+          },
+          "Features": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Luminous hands",
+                "Display back",
+                "Luminous indices",
+                "Central seconds",
+                "Screw-down crown",
+                "Chronometer",
+                "Rotating bezel",
+                "Small seconds",
+                "Limited edition",
+                "Gemstones and/or diamonds",
+                "Luminous numerals",
+                "Quick set",
+                "Power reserve display",
+                "Pvd/dlc coating",
+                "Solar watch",
+                "Skeletonized",
+                "Tempered blue hands",
+                "Other",
+                "Guilloché dial",
+                "Helium valve",
+                "World time watch",
+                "Master chronometer",
+                "Crown left",
+                "Screw-down push-buttons",
+                "Genevian seal",
+                "Guilloché dial (handwork)",
+                "Vintage",
+                "Smartwatch",
+                "One-hand watches",
+                "Special edition"
+              ]
+            },
+            "example": [
+              "Luminous hands"
+            ]
+          },
+          "Movement Type": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Automatic",
+                "Quartz",
+                "Manual winding",
+                "Solar",
+                "Smartwatch"
+              ]
+            },
+            "example": [
+              "Automatic"
+            ]
+          },
+          "Number of Jewels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "21"
+            ]
+          },
+          "Power Reserve": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "38 hours"
+            ]
+          },
+          "Frequency": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "18000 bph"
+            ]
+          },
+          "Image": {
+            "type": "array",
+            "description": "base64 encoded image",
+            "items": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        }
+      },
+      "SearchWatch": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether or not the `brand_name` provided matched a brand in our database"
+          },
+          "results": {
+            "type": "array",
+            "description": "The result(s), if any, which matched the provided reference number within the given brand",
+            "items": {
+              "$ref": "#/components/schemas/SearchWatchResult"
+            }
+          }
+        }
+      },
+      "SearchWatchResult": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "example": "7901c9d7-22f9-4783-b5ce-48ee079a62ab"
+          },
+          "model": {
+            "type": "string",
+            "example": "116500"
+          },
+          "confidence": {
+            "type": "integer",
+            "example": 3,
+            "description": "An integer between 1 and 3 indicating our confidence in the price data for this result (1: low, 2: medium, 3: high)"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchWatchVariant"
+            }
+          }
+        }
+      },
+      "SearchWatchVariant": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "example": "32001967-37f9-4353-aa11-f2998c879463"
+          },
+          "model": {
+            "type": "string",
+            "example": "116500-0001"
+          },
+          "dial_color": {
+            "type": "string",
+            "nullable": true,
+            "example": "white"
+          },
+          "confidence": {
+            "type": "integer",
+            "example": 3,
+            "description": "An integer between 1 and 3 indicating our confidence in the price data for this result (1: low, 2: medium, 3: high)"
+          }
+        }
+      },
+      "BrandList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Brand"
+        }
+      },
+      "Brand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the brand"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "Unique identifier of the brand"
+          },
+          "watch_count": {
+            "type": "integer",
+            "description": "The number of supported watches with market data in the brand"
+          },
+          "has_index": {
+            "type": "boolean",
+            "description": "Whether or not the brand has a market index"
+          },
+          "collections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Collection"
+            }
+          }
+        }
+      },
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the collection"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "Unique identifier of the collection"
+          },
+          "watch_count": {
+            "type": "integer",
+            "description": "The number of supported watches with market data in the collection"
+          },
+          "has_index": {
+            "type": "boolean",
+            "description": "Whether or not the collection has a market index"
+          }
+        },
+        "example": {
+          "name": "Saxonia",
+          "watch_count": 34,
+          "has_index": true
+        }
+      },
+      "WatchVolume": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/CountValue"
+        },
+        "example": {
+          "10/2023": {
+            "count": 204
+          },
+          "11/2023": {
+            "count": 219
+          },
+          "12/2023": {
+            "count": 298
+          }
+        }
+      },
+      "CountValue": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number",
+            "format": "integer"
+          }
+        },
+        "example": {
+          "median": 298
+        }
+      },
+      "WatchDom": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/MedianValue"
+        },
+        "example": {
+          "10/2023": {
+            "median": 12
+          },
+          "11/2023": {
+            "median": 22
+          },
+          "12/2023": {
+            "median": 16
+          }
+        }
+      },
+      "MedianValue": {
+        "type": "object",
+        "properties": {
+          "median": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "example": {
+          "median": 22
+        }
+      },
+      "MarketIndex": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "$ref": "#/components/schemas/IndexValues"
+          }
+        }
+      },
+      "IndexValues": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/IndexValue"
+        },
+        "example": {
+          "2023-12-05": {
+            "value": 26440
+          },
+          "2023-12-06": {
+            "value": 26457
+          },
+          "2023-12-07": {
+            "value": 26451
+          }
+        }
+      },
+      "IndexValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "integer"
+          }
+        },
+        "example": {
+          "median": 26451
+        }
+      },
+      "PriceRangeList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PriceRange"
+        }
+      },
+      "PriceRange": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "$5,000 to $10,000"
+          },
+          "min": {
+            "type": "number",
+            "format": "integer",
+            "example": 5001
+          },
+          "max": {
+            "type": "number",
+            "format": "integer",
+            "example": 10000
+          }
+        }
+      },
+      "NameList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Name"
+        }
+      },
+      "Name": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "AiDetect": {
+        "type": "object",
+        "properties": {
+          "watch_count": {
+            "type": "number",
+            "format": "integer",
+            "example": 2
+          },
+          "watches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AiDetectWatches"
+            }
+          }
+        }
+      },
+      "AiDetectWatches": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "integer",
+            "description": "the x coordinate of the detected watch, in px",
+            "example": 421
+          },
+          "y": {
+            "type": "number",
+            "format": "integer",
+            "description": "the y coordinate of the detected watch, in px",
+            "example": 495
+          },
+          "width": {
+            "type": "number",
+            "format": "integer",
+            "description": "the width of the detected watch, in px",
+            "example": 456
+          },
+          "height": {
+            "type": "number",
+            "format": "integer",
+            "description": "the height of the detected watch, in px",
+            "example": 686
+          },
+          "base64": {
+            "type": "string",
+            "format": "byte",
+            "example": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4z..."
+          }
+        }
+      },
+      "AiRecognize": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "$ref": "#/components/schemas/AiRecognizeBrand"
+          },
+          "watch": {
+            "$ref": "#/components/schemas/AiRecognizeWatch"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/AiRecognizeVariant"
+          }
+        }
+      },
+      "AiRecognizeBrand": {
+        "type": "object",
+        "description": "the brand that was identified",
+        "nullable": true,
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Rolex",
+            "description": "the name of the brand that was identified, compatible with the \"/brand/list\" endpoint"
+          },
+          "is_supported": {
+            "type": "boolean",
+            "example": true,
+            "description": "whether watch recognition is supported for the identified brand; if false, the \"watch\" and \"variant\" fields will be null"
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "example": 0.93,
+            "description": "the confidence that the identified brand is correct, from 0 to 1"
+          }
+        }
+      },
+      "AiRecognizeWatch": {
+        "type": "object",
+        "description": "the watch that was identified, can only be returned if a brand was identified",
+        "nullable": true,
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "126710BLRO",
+            "description": "the reference number of the watch that was identified"
+          },
+          "uuid": {
+            "type": "string",
+            "example": "709bf7fb-af7b-4272-bf6f-cce9512954c9",
+            "description": "the uuid of the watch that was identified, compatible with \"/watch/\" endpoints"
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "example": 0.89,
+            "description": "the confidence that the identified watch is correct, from 0 to 1"
+          }
+        }
+      },
+      "AiRecognizeVariant": {
+        "type": "object",
+        "description": "the variant that was identified, can only be returned if a brand and watch were identified",
+        "nullable": true,
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "126710BLRO-0001",
+            "description": "the reference number of the variant that was identified"
+          },
+          "uuid": {
+            "type": "string",
+            "example": "efd0c352-f257-4528-8e7a-3f99f404a19e",
+            "description": "the uuid of the variant that was identified, compatible with \"/watch/\" endpoints"
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "example": 0.95,
+            "description": "the confidence that the identified variant is correct, from 0 to 1"
+          }
+        }
+      },
+      "DataverseAggregation": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/DataverseCurrency"
+          },
+          "date": {
+            "$ref": "#/components/schemas/DataverseDate"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/DataverseFilters"
+          },
+          "aggregation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DataverseDateHistogram"
+              },
+              {
+                "$ref": "#/components/schemas/DataverseHistogram"
+              }
+            ]
+          }
+        },
+        "required": [
+          "date",
+          "aggregation",
+          "filters"
+        ]
+      },
+      "DataverseListings": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/DataverseCurrency"
+          },
+          "date": {
+            "$ref": "#/components/schemas/DataverseDate"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/DataverseFilters"
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 10,
+            "default": 10,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "page": {
+            "type": "integer",
+            "example": 1,
+            "default": 1,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "sort": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "example": "id",
+                "enum": [
+                  "id",
+                  "price",
+                  "created_date",
+                  "updated_date"
+                ]
+              },
+              "order": {
+                "type": "string",
+                "example": "desc",
+                "enum": [
+                  "asc",
+                  "desc"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "date",
+          "filters"
+        ]
+      },
+      "DataverseMetric": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/DataverseCurrency"
+          },
+          "date": {
+            "$ref": "#/components/schemas/DataverseDate"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/DataverseFilters"
+          },
+          "metric": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "example": "price",
+                "enum": [
+                  "id",
+                  "price",
+                  "is_sold"
+                ]
+              },
+              "function": {
+                "type": "string",
+                "example": "avg",
+                "enum": [
+                  "value_count",
+                  "avg",
+                  "sum",
+                  "min",
+                  "max",
+                  "percentiles",
+                  "cardinality"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "function"
+            ]
+          }
+        },
+        "required": [
+          "date",
+          "metric",
+          "filters"
+        ]
+      },
+      "DataverseCurrency": {
+        "type": "string",
+        "description": "The currency to use when retrieving or filtering prices.",
+        "default": "USD",
+        "enum": [
+          "USD",
+          "EUR",
+          "GBP",
+          "AUD",
+          "CHF",
+          "CAD",
+          "HKD",
+          "JPY",
+          "SGD",
+          "CNY",
+          "INR",
+          "MXN"
+        ]
+      },
+      "DataverseDateHistogram": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "date_histogram"
+            ],
+            "description": "The type of aggregation, fixed to `date_histogram`. The histogram will be aggregated on the field defined in the `date` parameter.",
+            "example": "date_histogram"
+          },
+          "interval": {
+            "type": "string",
+            "enum": [
+              "1d",
+              "1w",
+              "1M",
+              "1q",
+              "1y"
+            ],
+            "description": "The calendar interval for the histogram aggregation.\n* `1d` - 1 day\n* `1w` - 1 week\n* `1M` - 1 month\n* `1q` - 1 quarter\n* `1y` - 1 year\n",
+            "example": "1M"
+          },
+          "aggs": {
+            "$ref": "#/components/schemas/DataverseAggs",
+            "description": "Aggregation specifications for sub-aggregations."
+          }
+        },
+        "required": [
+          "type",
+          "interval",
+          "aggs"
+        ],
+        "additionalProperties": false
+      },
+      "DataverseHistogram": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "histogram"
+            ],
+            "description": "The type of aggregation, fixed to `histogram`.",
+            "example": "histogram"
+          },
+          "interval": {
+            "type": "number",
+            "description": "The interval for the histogram aggregation, specified as a numeric value. This value determines the size of each bucket in the histogram.",
+            "example": "10"
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "id",
+              "price",
+              "source"
+            ],
+            "example": "price"
+          },
+          "aggs": {
+            "$ref": "#/components/schemas/DataverseAggs",
+            "description": "Object containing sub-aggregations."
+          }
+        },
+        "required": [
+          "type",
+          "interval",
+          "field",
+          "aggs"
+        ],
+        "additionalProperties": false
+      },
+      "DataverseAggs": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "function": {
+              "type": "string",
+              "enum": [
+                "avg",
+                "percentiles",
+                "value_count",
+                "cardinality",
+                "sum",
+                "min",
+                "max"
+              ]
+            },
+            "field": {
+              "type": "string",
+              "enum": [
+                "id",
+                "price",
+                "is_sold"
+              ]
+            },
+            "percents": {
+              "type": "array",
+              "example": [
+                20,
+                50,
+                80
+              ],
+              "description": "Only applicable for `percentiles` function",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "required": [
+            "function",
+            "field"
+          ]
+        }
+      },
+      "DataverseDate": {
+        "type": "object",
+        "description": "Date range by which to filter the results.",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "created_date",
+              "updated_date"
+            ],
+            "description": "The field used for date aggregation. **Example:** `created_date`"
+          },
+          "start": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date for the aggregation in YYYY-MM-DD format. **Example:** `2024-01-01`"
+          },
+          "end": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date for the aggregation in YYYY-MM-DD format. **Example:** `2024-12-31`"
+          }
+        },
+        "required": [
+          "field",
+          "start",
+          "end"
+        ]
+      },
+      "DataverseFilters": {
+        "type": "object",
+        "description": "Additional filters.",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Unique identifier for the listing. **Example:** `14912585`",
+            "example": 14912585
+          },
+          "brand": {
+            "type": "string",
+            "description": "The brand name by which to filter. **Example:** `Rolex`",
+            "example": "Rolex"
+          },
+          "collection": {
+            "type": "string",
+            "description": "The collection name by which to filter. **Example:** `GMT-Master`",
+            "example": "GMT-Master"
+          },
+          "model": {
+            "type": "string",
+            "description": "The reference number of the watch by which to filter. **Example:** `126710BLNR`",
+            "example": "126710BLNR"
+          },
+          "variant": {
+            "type": "string",
+            "description": "The variant of the watch by which to filter, if applicable. **Example:** `126710BLNR-0001`",
+            "example": "126710BLNR-0001"
+          },
+          "title": {
+            "type": "string",
+            "description": "Filter by keyword in the listing title. **Example:** `Batman`",
+            "example": "Batman"
+          },
+          "price": {
+            "type": "object",
+            "description": "The price range by which to filter.",
+            "properties": {
+              "min": {
+                "type": "number",
+                "description": "Minimum price in the specified currency.",
+                "example": 5000
+              },
+              "max": {
+                "type": "number",
+                "description": "Maximum price in the specified currency.",
+                "example": 15000
+              }
+            }
+          },
+          "is_sold": {
+            "type": "boolean",
+            "description": "The sold status by which to filter.",
+            "example": 0
+          }
+        },
+        "required": [
+          "brand"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/.vitest
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+.env.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+venv/
+env/
+ENV/
+
+# Data files (generated/cache)
+/data/*.csv
+/data/*.json
+/data/*.html
+
+# Python test files (legacy, not needed for Next.js)
+test_*.py
+test_*.pyc
+
+# Legacy Python scripts (not used by Next.js app)
+amazon_explorer.py
+app.py
+chatbot_mcp.py
+psa_card_arbitrage.py
+setup_ebay_oauth.py
+streamlit_chatbot.py
+scanners/
+reports/
+templates/
+
+# Archive folder
+archive/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
