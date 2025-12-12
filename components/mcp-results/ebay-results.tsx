@@ -128,7 +128,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
 
   return (
     <Card className="w-full mx-auto">
-      <CardHeader className="px-4 sm:px-6">
+      <CardHeader className="px-2 sm:px-6">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
@@ -174,7 +174,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="px-3 sm:px-6">
+      <CardContent className="px-1 sm:px-6">
         {/* Valuation Filter */}
         <div className="mb-3 sm:mb-6 p-3 sm:p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
@@ -279,7 +279,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full">
+            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full">
               {filteredItems.map((item, index) => (
                 <EbayItemCard key={item.item_id} item={item} index={index} onNegotiate={onNegotiate} />
               ))}
@@ -636,7 +636,7 @@ Please provide:
   
   return (
     <div 
-      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full ${getRingColor()}`}
+      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full sm:max-w-none ${getRingColor()}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Image Carousel Gallery */}
@@ -645,7 +645,7 @@ Please provide:
           {/* Swipeable Carousel Container */}
           <div
             ref={imageContainerRef}
-            className="relative h-48 sm:h-56 md:h-64 overflow-hidden cursor-grab active:cursor-grabbing touch-pan-x"
+            className="relative h-36 sm:h-56 md:h-64 overflow-hidden cursor-grab active:cursor-grabbing touch-pan-x"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -715,7 +715,7 @@ Please provide:
             
             {/* Image Counter */}
             {images.length > 1 && (
-              <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-md z-20">
+              <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md z-20">
                 {currentImageIndex + 1} / {images.length}
               </div>
             )}
@@ -750,7 +750,7 @@ Please provide:
                 <button
                   key={idx}
                   onClick={() => setCurrentImageIndex(idx)}
-                  className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-luxury touch-manipulation ${
+                  className={`flex-shrink-0 w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-luxury touch-manipulation ${
                     idx === currentImageIndex
                       ? 'border-luxury-gold ring-2 ring-luxury-gold/30'
                       : 'border-transparent active:border-luxury-gold/50 opacity-70 active:opacity-100'
@@ -769,8 +769,8 @@ Please provide:
           )}
         </div>
       )}
-      <div className="p-3 sm:p-4 md:p-5 space-y-2.5 sm:space-y-3">
-        <h4 className="font-semibold text-sm sm:text-base md:text-base line-clamp-2 min-h-[2.5rem] sm:min-h-[2.75rem] md:min-h-[3rem] leading-snug">
+      <div className="p-2.5 sm:p-4 md:p-5 space-y-2 sm:space-y-3">
+        <h4 className="font-semibold text-xs sm:text-base md:text-base line-clamp-2 min-h-[2rem] sm:min-h-[2.75rem] md:min-h-[3rem] leading-snug">
           {item.title}
         </h4>
         
@@ -789,12 +789,12 @@ Please provide:
             </div>
 
         {isWatchPart && (
-          <div className="rounded-lg p-3 md:p-4 space-y-2 border border-amber-500/30 bg-amber-500/10">
-            <div className="flex items-center gap-1.5 text-xs md:text-sm font-semibold text-amber-400">
-              <AlertCircle className="h-4 w-4" />
+          <div className="rounded-lg p-2 sm:p-3 md:p-4 space-y-1.5 sm:space-y-2 border border-amber-500/30 bg-amber-500/10">
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs md:text-sm font-semibold text-amber-400">
+              <AlertCircle className="h-3 w-3 sm:h-4 sm:w-4" />
               Watch Part Detected
             </div>
-            <p className="text-xs md:text-sm text-amber-300/80">
+            <p className="text-[10px] sm:text-xs md:text-sm text-amber-300/80">
               This listing appears to be for a watch part or accessory, not a complete watch. Arbitrage analysis is not available for parts.
             </p>
             {arbitrage?.price_source && (
@@ -806,14 +806,14 @@ Please provide:
         )}
         
         {arbitrage && arbitrage.valuation_status !== 'unknown' && !isWatchPart && (
-          <div className={`rounded-lg p-3 md:p-4 space-y-2 border transition-luxury ${
+          <div className={`rounded-lg p-2 sm:p-3 md:p-4 space-y-1.5 sm:space-y-2 border transition-luxury ${
             arbitrage.valuation_status === 'undervalued' 
               ? 'bg-luxury-gold/10 border-luxury-gold/30'
               : arbitrage.valuation_status === 'overvalued'
               ? 'bg-red-500/10 border-red-500/30'
               : 'bg-luxury-platinum/10 border-luxury-platinum/30'
           }`}>
-            <div className={`flex items-center gap-1.5 text-xs md:text-sm font-semibold ${
+            <div className={`flex items-center gap-1 text-xs sm:text-xs md:text-sm font-semibold ${
               arbitrage.valuation_status === 'undervalued'
                 ? 'text-luxury-gold'
                 : arbitrage.valuation_status === 'overvalued'
@@ -828,7 +828,7 @@ Please provide:
               {arbitrage.valuation_status === 'fair_value' && 'Fair Value - Market Price'}
             </div>
             {arbitrage.market_price_usd && (
-              <div className={`text-xs md:text-sm ${
+              <div className={`text-[10px] sm:text-xs md:text-sm ${
                 arbitrage.valuation_status === 'undervalued'
                   ? 'text-luxury-gold/90'
                   : arbitrage.valuation_status === 'overvalued'
@@ -854,7 +854,7 @@ Please provide:
               </div>
             )}
             {arbitrage.retail_price_usd && (
-              <div className="text-xs text-muted-foreground">
+              <div className="text-[10px] sm:text-xs text-muted-foreground">
                 Retail/MSRP: {formatCurrency(arbitrage.retail_price_usd)}
               </div>
             )}
@@ -871,11 +871,11 @@ Please provide:
                 </a>
               </div>
             )}
-            <div className="flex items-center gap-2 text-xs">
-              <Badge variant="outline" className="text-[10px]">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px]">
+              <Badge variant="outline" className="text-[9px] sm:text-[10px] px-1.5 py-0.5">
                 Risk: {arbitrage.risk_level}
               </Badge>
-              <Badge variant="outline" className="text-[10px]">
+              <Badge variant="outline" className="text-[9px] sm:text-[10px] px-1.5 py-0.5">
                 Confidence: {arbitrage.confidence}
               </Badge>
             </div>
@@ -886,16 +886,16 @@ Please provide:
           <WatchDatabaseVerification item={item} watchDbData={item.watchDbData} />
         )}
 
-        <div className="flex items-center gap-2 flex-wrap pt-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap pt-1.5 sm:pt-2">
           {item.condition && (
-            <Badge variant="luxury" className="text-xs sm:text-xs">
+            <Badge variant="luxury" className="text-[10px] sm:text-xs">
               {item.condition}
             </Badge>
           )}
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs sm:text-xs md:text-sm h-9 sm:h-8 md:h-8 px-3 sm:px-3 md:px-3 hover:text-luxury-gold active:text-luxury-gold transition-luxury touch-manipulation min-h-[44px] sm:min-h-0"
+            className="text-[10px] sm:text-xs md:text-sm h-8 sm:h-8 md:h-8 px-2 sm:px-3 md:px-3 hover:text-luxury-gold active:text-luxury-gold transition-luxury touch-manipulation min-h-[36px] sm:min-h-0"
             onClick={() => setShowDetails(!showDetails)}
           >
             {showDetails ? 'Hide Details' : 'View Details'}

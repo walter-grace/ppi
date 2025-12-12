@@ -6,7 +6,6 @@ import { DefaultChatTransport } from 'ai';
 import { ChatMessages } from '@/components/chat/chat-messages';
 import { ChatInput } from '@/components/chat/chat-input';
 import { SamplePrompts } from '@/components/chat/sample-prompts';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
 import { MessageSquare, Sparkles, TrendingUp, Zap } from 'lucide-react';
 import { EbayResults } from '@/components/mcp-results/ebay-results';
@@ -490,9 +489,9 @@ export default function Home() {
       </header>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full">
-          <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
+      <div className="flex-1 overflow-x-auto overflow-y-auto">
+        <div className="h-full w-full overflow-x-auto">
+          <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">
             {messages.length === 0 ? (
               <div className="flex h-full items-center justify-center min-h-[60vh] animate-slide-up">
                 <Card className="w-full max-w-3xl p-8 md:p-12 glass hover-lift">
@@ -568,7 +567,7 @@ export default function Home() {
               </>
             )}
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
       {/* Input Area */}
