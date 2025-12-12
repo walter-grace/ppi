@@ -9,8 +9,6 @@ import { SamplePrompts } from '@/components/chat/sample-prompts';
 import { Card } from '@/components/ui/card';
 import { MessageSquare, Sparkles, TrendingUp, Zap } from 'lucide-react';
 import { EbayResults } from '@/components/mcp-results/ebay-results';
-import { ErrorPanel } from '@/components/devtools/error-panel';
-import { DebugPanel } from '@/components/chat/debug-panel';
 
 export default function Home() {
   const chatHook = useChat({
@@ -589,13 +587,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Error Panel */}
-      <ErrorPanel />
-      
-      {/* Debug Panel - Remove in production */}
-      {process.env.NODE_ENV === 'development' && (
-        <DebugPanel messages={messages} isLoading={isLoading} error={error} />
-      )}
     </div>
   );
 }
