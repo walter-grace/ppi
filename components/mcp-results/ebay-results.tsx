@@ -636,7 +636,7 @@ Please provide:
   
   return (
     <div 
-      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in ${getRingColor()}`}
+      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full ${getRingColor()}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Image Carousel Gallery */}
