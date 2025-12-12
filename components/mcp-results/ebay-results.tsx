@@ -128,7 +128,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
 
   return (
     <Card className="w-full mx-auto">
-      <CardHeader className="px-3 sm:px-6">
+      <CardHeader className="px-4 sm:px-6">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
@@ -174,7 +174,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="px-2 sm:px-6">
+      <CardContent className="px-3 sm:px-6">
         {/* Valuation Filter */}
         <div className="mb-3 sm:mb-6 p-3 sm:p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
@@ -279,7 +279,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full px-2 sm:px-0">
+            <div className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full">
               {filteredItems.map((item, index) => (
                 <EbayItemCard key={item.item_id} item={item} index={index} onNegotiate={onNegotiate} />
               ))}
@@ -636,7 +636,7 @@ Please provide:
   
   return (
     <div 
-      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full max-w-full sm:max-w-none ${getRingColor()}`}
+      className={`border border-border/50 rounded-xl overflow-hidden hover-lift bg-card/80 glass transition-luxury animate-scale-in w-full ${getRingColor()}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Image Carousel Gallery */}
