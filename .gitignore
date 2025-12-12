@@ -38,39 +38,31 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Python
+# Python - All Python files moved to py-lux repo
+*.py
+*.pyc
+*.pyo
+*.pyd
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-*.pyc
 venv/
 env/
 ENV/
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Data files (generated/cache)
-/data/*.csv
-/data/*.json
-/data/*.html
-
-# Python test files (legacy, not needed for Next.js)
-test_*.py
-test_*.pyc
-
-# Legacy Python scripts (not used by Next.js app)
-amazon_explorer.py
-app.py
-chatbot_mcp.py
-psa_card_arbitrage.py
-setup_ebay_oauth.py
-streamlit_chatbot.py
+# Python folders (moved to py-lux repo)
 scanners/
 reports/
 templates/
-
-# Archive folder
 archive/
+data/
+
+# Python requirements (moved to py-lux repo)
+requirements.txt
 
 # IDE
 .vscode/
