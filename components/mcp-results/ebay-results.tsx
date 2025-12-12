@@ -153,11 +153,11 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
               )}
             </div>
           </div>
-          <Button
+            <Button
             variant="outline"
             size="sm"
             onClick={() => setShowRawData(!showRawData)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-xs sm:text-xs md:text-sm h-9 sm:h-8 md:h-8 px-3 sm:px-3 md:px-4 min-h-[44px] sm:min-h-0 touch-manipulation"
           >
             <Database className="h-4 w-4" />
             {showRawData ? (
@@ -176,12 +176,12 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
       </CardHeader>
       <CardContent>
         {/* Valuation Filter */}
-        <div className="mb-6 p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-4 w-4 md:h-5 md:w-5 text-luxury-gold" />
-            <h3 className="text-sm md:text-base font-semibold">Filter by Valuation</h3>
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <Filter className="h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5 text-luxury-gold" />
+            <h3 className="text-xs sm:text-sm md:text-base font-semibold">Filter by Valuation</h3>
           </div>
-          <div className="flex flex-wrap gap-2 md:gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-2 md:gap-3 overflow-x-auto pb-2 -mx-1 px-1">
             <FilterButton
               filter="all"
               label="All Items"
@@ -279,7 +279,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {filteredItems.map((item, index) => (
                 <EbayItemCard key={item.item_id} item={item} index={index} onNegotiate={onNegotiate} />
               ))}
@@ -293,7 +293,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
                   size="lg"
                   onClick={handleLoadMore}
                   disabled={isLoadingMore}
-                  className="px-8 py-6 text-base font-semibold flex items-center gap-3 min-w-[200px]"
+                  className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold flex items-center gap-3 min-w-[200px] min-h-[52px] sm:min-h-[56px] touch-manipulation active:scale-[0.98]"
                 >
                   {isLoadingMore ? (
                     <>
@@ -338,11 +338,12 @@ function FilterButton({ filter, label, count, active, onClick, className, icon }
     <button
       onClick={onClick}
       className={`
-        flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-lg
-        text-xs md:text-sm font-medium transition-luxury
-        border-2 ${active ? 'ring-2 ring-luxury-gold ring-offset-2 ring-offset-background shadow-lg shadow-luxury-gold/20' : ''}
+        flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3 md:px-4 py-2 sm:py-2 md:py-2.5 rounded-lg
+        text-xs sm:text-xs md:text-sm font-medium transition-luxury touch-manipulation
+        border-2 min-h-[44px] min-w-[44px]
+        ${active ? 'ring-2 ring-luxury-gold ring-offset-2 ring-offset-background shadow-lg shadow-luxury-gold/20' : ''}
         ${className || ''}
-        ${active ? 'scale-[1.02]' : 'hover:scale-105'}
+        ${active ? 'scale-[1.02]' : 'active:scale-105'}
         disabled:opacity-50 disabled:cursor-not-allowed
       `}
       disabled={count === 0}
@@ -644,7 +645,7 @@ Please provide:
           {/* Swipeable Carousel Container */}
           <div
             ref={imageContainerRef}
-            className="relative h-56 md:h-64 overflow-hidden cursor-grab active:cursor-grabbing"
+            className="relative h-48 sm:h-56 md:h-64 overflow-hidden cursor-grab active:cursor-grabbing touch-pan-x"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -694,7 +695,7 @@ Please provide:
                     e.stopPropagation();
                     goToPrevious();
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-luxury z-20 backdrop-blur-sm"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-2.5 sm:p-2 rounded-full transition-luxury z-20 backdrop-blur-sm touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
@@ -704,7 +705,7 @@ Please provide:
                     e.stopPropagation();
                     goToNext();
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-luxury z-20 backdrop-blur-sm"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-2.5 sm:p-2 rounded-full transition-luxury z-20 backdrop-blur-sm touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Next image"
                 >
                   <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
@@ -744,15 +745,15 @@ Please provide:
           
           {/* Thumbnail Strip */}
           {images.length > 1 && (
-            <div className="flex gap-1.5 p-2 bg-muted/30 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-1.5 sm:gap-2 p-2 bg-muted/30 overflow-x-auto scrollbar-hide touch-pan-x">
               {images.map((imageUrl, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentImageIndex(idx)}
-                  className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-luxury ${
+                  className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-luxury touch-manipulation ${
                     idx === currentImageIndex
                       ? 'border-luxury-gold ring-2 ring-luxury-gold/30'
-                      : 'border-transparent hover:border-luxury-gold/50 opacity-70 hover:opacity-100'
+                      : 'border-transparent active:border-luxury-gold/50 opacity-70 active:opacity-100'
                   }`}
                 >
                   <img
@@ -768,8 +769,8 @@ Please provide:
           )}
         </div>
       )}
-      <div className="p-4 md:p-5 space-y-3">
-        <h4 className="font-semibold text-sm md:text-base line-clamp-2 min-h-[2.5rem] md:min-h-[3rem] leading-snug">
+      <div className="p-3 sm:p-4 md:p-5 space-y-2.5 sm:space-y-3">
+        <h4 className="font-semibold text-sm sm:text-base md:text-base line-clamp-2 min-h-[2.5rem] sm:min-h-[2.75rem] md:min-h-[3rem] leading-snug">
           {item.title}
         </h4>
         
@@ -887,14 +888,14 @@ Please provide:
 
         <div className="flex items-center gap-2 flex-wrap pt-2">
           {item.condition && (
-            <Badge variant="luxury" className="text-xs">
+            <Badge variant="luxury" className="text-xs sm:text-xs">
               {item.condition}
             </Badge>
           )}
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs md:text-sm h-7 md:h-8 px-3 hover:text-luxury-gold transition-luxury"
+            className="text-xs sm:text-xs md:text-sm h-9 sm:h-8 md:h-8 px-3 sm:px-3 md:px-3 hover:text-luxury-gold active:text-luxury-gold transition-luxury touch-manipulation min-h-[44px] sm:min-h-0"
             onClick={() => setShowDetails(!showDetails)}
           >
             {showDetails ? 'Hide Details' : 'View Details'}
@@ -1034,9 +1035,9 @@ Please provide:
               variant="luxury"
               size="sm"
               onClick={handleNegotiate}
-              className="w-full text-xs md:text-sm font-semibold flex items-center justify-center gap-2"
+              className="w-full text-xs sm:text-xs md:text-sm font-semibold flex items-center justify-center gap-2 h-11 sm:h-10 md:h-10 min-h-[44px] touch-manipulation active:scale-[0.98]"
             >
-              <Handshake className="h-4 w-4" />
+              <Handshake className="h-4 w-4 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
               Use Negotiator
             </Button>
           )}
@@ -1104,10 +1105,10 @@ Please provide:
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 text-xs md:text-sm font-medium text-luxury-gold hover:text-luxury-gold-light transition-luxury border border-luxury-gold/30 rounded-lg px-4 py-2 hover:bg-luxury-gold/10 hover:border-luxury-gold"
+            className="flex items-center justify-center gap-2 text-xs sm:text-xs md:text-sm font-medium text-luxury-gold active:text-luxury-gold-light transition-luxury border border-luxury-gold/30 rounded-lg px-4 py-2.5 sm:py-2 md:py-2 active:bg-luxury-gold/10 active:border-luxury-gold min-h-[44px] sm:min-h-0 touch-manipulation active:scale-[0.98]"
           >
             View on eBay
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
           </a>
         </div>
       </div>

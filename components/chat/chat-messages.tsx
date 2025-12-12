@@ -112,13 +112,13 @@ export function ChatMessages({ messages, isLoading, onPromptSelect, onNegotiate,
           
           <div
             className={cn(
-              'flex flex-col gap-2 max-w-[85%] md:max-w-[80%]',
+              'flex flex-col gap-2 w-full sm:max-w-[85%] md:max-w-[80%]',
               message.role === 'user' ? 'items-end' : 'items-start'
             )}
           >
             <div
               className={cn(
-                'rounded-xl px-4 py-3 md:px-5 md:py-4 transition-luxury shadow-sm',
+                'rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 md:px-5 md:py-4 transition-luxury shadow-sm w-full',
                 message.role === 'user'
                   ? 'bg-gradient-to-br from-luxury-gold to-luxury-gold-light text-luxury-dark font-medium shadow-lg shadow-luxury-gold/20'
                   : 'bg-muted/80 glass border border-border/50 hover:border-luxury-gold/20'
@@ -163,7 +163,7 @@ export function ChatMessages({ messages, isLoading, onPromptSelect, onNegotiate,
               <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-luxury-gold" />
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col gap-2 items-start max-w-[85%] md:max-w-[80%]">
+          <div className="flex flex-col gap-2 items-start w-full sm:max-w-[85%] md:max-w-[80%]">
             <div className="rounded-xl px-4 py-3 md:px-5 md:py-4 bg-muted/80 glass border border-border/50">
               <div className="flex gap-1.5">
                 <span className="w-2 h-2 bg-luxury-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
