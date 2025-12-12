@@ -174,9 +174,9 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-2 sm:px-6">
         {/* Valuation Filter */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
+        <div className="mb-3 sm:mb-6 p-3 sm:p-4 md:p-5 bg-muted/50 glass border border-border/50 rounded-lg">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
             <Filter className="h-4 w-4 sm:h-4 sm:w-4 md:h-5 md:w-5 text-luxury-gold" />
             <h3 className="text-xs sm:text-sm md:text-base font-semibold">Filter by Valuation</h3>
@@ -279,7 +279,7 @@ export function EbayResults({ result, onNegotiate, onLoadMore }: EbayResultsProp
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6">
+            <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 md:gap-6 w-full">
               {filteredItems.map((item, index) => (
                 <EbayItemCard key={item.item_id} item={item} index={index} onNegotiate={onNegotiate} />
               ))}
