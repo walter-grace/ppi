@@ -417,33 +417,30 @@ function EbayItemCard({ item, index = 0, onNegotiate }: { item: EbayItem; index?
   };
   
   // Carousel navigation
-  const goToNext = () => {
+  const goToNext = React.useCallback(() => {
     setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  }, [images.length]);
   
-  const goToPrevious = () => {
+  const goToPrevious = React.useCallback(() => {
     setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  }, [images.length]);
   
   // Touch/Mouse drag handlers for swipe
-  const handleDragStart = (clientX: number) => {
+  const handleDragStart = React.useCallback((clientX: number) => {
     setIsDragging(true);
     setDragStart(clientX);
     setDragOffset(0);
-  };
+  }, []);
   
-  const handleDragMove = (clientX: number) => {
-    if (!isDragging) return;
-    const diff = clientX - dragStart;
+  const handleDragMove = React.useCallback((clientX: number, startX: number) => {
+    const diff = clientX - startX;
     setDragOffset(diff);
-  };
+  }, []);
   
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    
+  const handleDragEnd = React.useCallback((currentOffset: number) => {
     const threshold = 50; // Minimum drag distance to trigger swipe
-    if (Math.abs(dragOffset) > threshold) {
-      if (dragOffset > 0) {
+    if (Math.abs(currentOffset) > threshold) {
+      if (currentOffset > 0) {
         goToPrevious();
       } else {
         goToNext();
@@ -452,41 +449,87 @@ function EbayItemCard({ item, index = 0, onNegotiate }: { item: EbayItem; index?
     
     setIsDragging(false);
     setDragOffset(0);
-  };
+  }, [goToNext, goToPrevious]);
   
   // Touch event handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    handleDragStart(e.touches[0].clientX);
-  };
+  const handleTouchStart = React.useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    handleDragStart(touch.clientX);
+  }, [handleDragStart]);
   
-  const handleTouchMove = (e: React.TouchEvent) => {
-    handleDragMove(e.touches[0].clientX);
-  };
+  const handleTouchMove = React.useCallback((e: React.TouchEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const currentStart = dragStart;
+    handleDragMove(touch.clientX, currentStart);
+  }, [isDragging, dragStart, handleDragMove]);
   
-  const handleTouchEnd = () => {
-    handleDragEnd();
-  };
+  const handleTouchEnd = React.useCallback(() => {
+    if (!isDragging) return;
+    handleDragEnd(dragOffset);
+  }, [isDragging, dragOffset, handleDragEnd]);
   
-  // Mouse event handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    handleDragStart(e.clientX);
-  };
+  // Mouse event handlers - use refs to track state
+  const mouseStartRef = React.useRef<number | null>(null);
   
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseDown = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    mouseStartRef.current = e.clientX;
+    setIsDragging(true);
+    setDragStart(e.clientX);
+    setDragOffset(0);
+  }, []);
+  
+  const handleMouseMove = React.useCallback((e: React.MouseEvent) => {
+    if (!isDragging || mouseStartRef.current === null) return;
+    e.preventDefault();
+    const diff = e.clientX - mouseStartRef.current;
+    setDragOffset(diff);
+  }, [isDragging]);
+  
+  const handleMouseUp = React.useCallback(() => {
+    if (!isDragging) return;
+    const currentOffset = dragOffset;
+    mouseStartRef.current = null;
+    handleDragEnd(currentOffset);
+  }, [isDragging, dragOffset, handleDragEnd]);
+  
+  const handleMouseLeave = React.useCallback(() => {
     if (isDragging) {
-      handleDragMove(e.clientX);
+      const currentOffset = dragOffset;
+      mouseStartRef.current = null;
+      handleDragEnd(currentOffset);
     }
-  };
+  }, [isDragging, dragOffset, handleDragEnd]);
   
-  const handleMouseUp = () => {
-    handleDragEnd();
-  };
-  
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      handleDragEnd();
-    }
-  };
+  // Add global mouse event listeners for better drag tracking
+  React.useEffect(() => {
+    if (!isDragging) return;
+    
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (mouseStartRef.current === null) return;
+      const diff = e.clientX - mouseStartRef.current;
+      setDragOffset(diff);
+    };
+    
+    const handleGlobalMouseUp = () => {
+      if (isDragging && mouseStartRef.current !== null) {
+        const currentOffset = dragOffset;
+        mouseStartRef.current = null;
+        handleDragEnd(currentOffset);
+      }
+    };
+    
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, dragOffset, handleDragEnd]);
   
   const handleNegotiate = () => {
     if (!onNegotiate) return;
@@ -641,7 +684,7 @@ Please provide:
     >
       {/* Image Carousel Gallery */}
       {images.length > 0 && (
-        <div className="relative w-full bg-muted/50 overflow-hidden group">
+        <div className="relative w-full bg-background overflow-hidden group">
           {/* Swipeable Carousel Container */}
           <div
             ref={imageContainerRef}
@@ -659,17 +702,16 @@ Please provide:
           >
             {/* Image Carousel */}
             <div
-              className="flex h-full transition-transform duration-300 ease-out"
+              className={`flex h-full ${isDragging ? '' : 'transition-transform duration-300 ease-out'}`}
               style={{
                 transform: `translateX(calc(-${currentImageIndex * 100}% + ${dragOffset}px))`,
-                width: `${images.length * 100}%`,
               }}
             >
               {images.map((imageUrl, idx) => (
                 <div
                   key={idx}
                   className="w-full h-full flex-shrink-0 relative"
-                  style={{ width: `${100 / images.length}%` }}
+                  style={{ minWidth: '100%', maxWidth: '100%' }}
                 >
                   <img
                     src={imageUrl}
@@ -679,7 +721,12 @@ Please provide:
                     draggable={false}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
+                      target.style.opacity = '0.3';
+                      console.error('Image failed to load:', imageUrl);
+                    }}
+                    onLoad={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.opacity = '1';
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
