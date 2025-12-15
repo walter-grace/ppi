@@ -34,6 +34,25 @@ async function initializeMCPServers() {
     console.warn('⚠️ Failed to connect to Watch Database MCP:', error);
   }
 
+  // Initialize Stripe MCP server
+  try {
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (stripeSecretKey && !manager.isConnected('stripe')) {
+      // Use local Stripe MCP server with API key
+      await manager.connect({
+        name: 'stripe',
+        command: 'npx',
+        args: ['-y', '@stripe/mcp', '--tools=all'],
+        env: {
+          STRIPE_SECRET_KEY: stripeSecretKey,
+        },
+      });
+      console.log('✅ Connected to Stripe MCP');
+    }
+  } catch (error) {
+    console.warn('⚠️ Failed to connect to Stripe MCP:', error);
+  }
+
   mcpInitialized = true;
 }
 

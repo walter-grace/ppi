@@ -33,3 +33,37 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# Python files (moved to py-lux repo)
+*.py
+__pycache__/
+*.pyc
+venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+data/*.csv
+data/*.json
+data/*.html
+test_*.py
+test_*.pyc
+amazon_explorer.py
+app.py
+chatbot_mcp.py
+psa_card_arbitrage.py
+setup_ebay_oauth.py
+streamlit_chatbot.py
+scanners/
+reports/
+templates/
+archive/
